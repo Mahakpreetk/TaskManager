@@ -8,7 +8,7 @@ export const createUserAccount = createAsyncThunk(
   'auth/createAccount',
   async (user: User, { fulfillWithValue, rejectWithValue, dispatch }) => {
     try {
-      const { data } = await axios.post('/agent', user);
+      const { data } = await axios.post('/users', user);
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
@@ -33,12 +33,10 @@ export const updateUserAccount = createAsyncThunk(
 
 export const userPasswordReset = createAsyncThunk(
   'auth/userPasswordReset',
-  async ({ password, token }: { password: string, token: string }, { fulfillWithValue, rejectWithValue }) => {
+  async (credentials: UserCredentials, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await axios.post('/agent/change-password', { password, token }, {
-        headers: { "Content-type": "application/json" }
-      });
-      return fulfillWithValue({ ...data, stage: 'change-password' });
+      const { data } = await axios.post('/users/change-password', credentials);
+      return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
       return rejectWithValue(error.response?.data);
@@ -54,6 +52,7 @@ export const userLogin = createAsyncThunk(
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
+      console.log('error: ' + error.response);
       return rejectWithValue(error.response?.data);
     }
   }

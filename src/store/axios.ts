@@ -11,7 +11,7 @@ axios.interceptors.request.use(function (config) {
   config.baseURL = process.env.REACT_APP_WEB_SERVICE_BASE_URL
   config.headers['Accept'] = '*/*';
   config.headers['Authorization'] = `Bearer ${token}`
-  config.headers['Access-Control-Allow-Origin'] = '*'
+  
   // Do something before request is sent
   return config;
 }, function (error) {
@@ -30,8 +30,8 @@ export const setupAxiosResponseInterceptors = (
 
     return response;
   }, function (error) {
-    console.log('AXIOS ERROR:: ', error.response.status);
-    if (error.response.status === 401) {
+    console.log('AXIOS ERROR:: ', error.response);
+    if (error.response?.status === 401) {
       dispatch(clearUser())
       dispatch(notify('Session just ended. Kindly login again', 'error'))
       navigate('/login')
