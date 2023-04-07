@@ -52,7 +52,6 @@ export const userLogin = createAsyncThunk(
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
-      console.log('error: ' + error.response);
       return rejectWithValue(error.response?.data);
     }
   }

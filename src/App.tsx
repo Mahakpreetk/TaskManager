@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router';
 import NotificationsSystem, { dismissNotification, setUpNotifications, wyboTheme } from 'reapop';
 import { useAppDispatch, useAppSelector } from './hook/redux';
-import LoginPage from './pages/LoginPage';
+import Auth from './pages/auth/Auth';
+import CreateAccountPage from './pages/create_account/CreateAccountPage';
+import LoginPage from './pages/login/LoginPage';
 import { setupAxiosResponseInterceptors } from './store/axios';
 
 const App: React.FC = () => {
@@ -30,6 +32,10 @@ const App: React.FC = () => {
     />
     <Routes>
       <Route path='/' element={<LoginPage />} />
+      <Route path='/auth' element={<Auth />} >
+        <Route path='login' element={<LoginPage />} />
+        <Route path='create-account' element={<CreateAccountPage />} />
+      </Route>
     </Routes>
   </>
 }
