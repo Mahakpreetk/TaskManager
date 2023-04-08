@@ -9,7 +9,7 @@ const Dashboard: React.FC = () => {
         <div className='w-full flex-none text-2xl mb-5 font-bold text-stone-300'>
           DASHBOARD
         </div>
-        <ul className='mt-5 ml-1 flex flex-col flex-grow'>
+        <ul className='ml-1 flex flex-col flex-grow'>
           <div className='flex-grow'>
             <SidebarLink title={'Users'} icon={<Users />} path={'/users'} />
             <SidebarLink title={'Tasks'} icon={<Folder />} path={'/tasks'} />
