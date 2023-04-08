@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import NavTabs from 'src/components/NavTabs'
 import CustomTable from 'src/components/table'
+import { useAppDispatch, useAppSelector } from 'src/hook/redux'
+import { TaskStatus } from 'src/models/task'
+import { getAllTasks } from 'src/store/task/taskService'
 import TasksTableBody from './TasksTableBody'
 
 const TasksPage: React.FC = () => {
-  const tabsItems = ['all', 'completed', 'in-progress', 'not-started'];
+  const tabsItems: TaskStatus[] = ['all', 'completed', 'in-progress', 'not-started'];
   const [activeTab, setActiveTab] = useState(0)
+  const dispatch = useAppDispatch();
+  const { tasks } = useAppSelector((state) => state.tasks);
 
   useEffect(() => {
-    
+    dispatch(getAllTasks(tabsItems[activeTab]))
+    // eslint-disable-next-line 
   }, [activeTab])
 
   return (
@@ -24,7 +30,7 @@ const TasksPage: React.FC = () => {
       />
       <CustomTable
         heading={['Title', 'Priority', 'Status', 'Due Date', 'Created On', 'Updated On', '']}
-        tbody={<TasksTableBody data={[]} />}
+        tbody={<TasksTableBody data={tasks} />}
       />
     </div>
   )

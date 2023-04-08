@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authSlice from './auth/authSlice'
+import taskSlice from './task/taskSlice'
 import { reducer as notificationsReducer } from 'reapop'
 
 export const store = configureStore({
   reducer: {
     notifications: notificationsReducer(),
     auth: authSlice,
+    tasks: taskSlice,
   },
 })
 

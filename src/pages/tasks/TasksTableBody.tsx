@@ -1,6 +1,7 @@
 import { Table } from 'flowbite-react'
 import moment from 'moment'
 import React from 'react'
+import { Edit, Delete, Eye } from 'react-feather'
 import { Task } from 'src/models/task'
 
 interface TasksTableBodyProps {
@@ -10,7 +11,7 @@ interface TasksTableBodyProps {
 const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
   return (
     <Table.Body className="divide-y">
-      {data.map(datum =>
+      {data.length > 0 ? data.map(datum =>
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
             {datum.title}
@@ -30,8 +31,15 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
           <Table.Cell>
             {moment(datum.udpatedAt).format('LLL')}
           </Table.Cell>
+          <Table.Cell>
+            <Edit />
+            <Delete />
+            <Eye />
+          </Table.Cell>
         </Table.Row>
-      )}
+      ) : <Table.Row>
+        <Table.Cell className='border text-center' colSpan={7}>No task found</Table.Cell>
+      </Table.Row>}
     </Table.Body>
   )
 }
