@@ -1,7 +1,8 @@
-import { Table } from 'flowbite-react'
+import { Table, Tooltip } from 'flowbite-react'
 import moment from 'moment'
 import React from 'react'
-import { Edit, Delete, Eye } from 'react-feather'
+import { Edit, Eye, Trash } from 'react-feather'
+import Chip from 'src/components/Chip'
 import { Task } from 'src/models/task'
 
 interface TasksTableBodyProps {
@@ -17,7 +18,11 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
             {datum.title}
           </Table.Cell>
           <Table.Cell>
-            {datum.priority}
+            {<Chip
+              child={datum.priority}
+              bgColor={datum.priority === 'high' ? 'bg-red-500' : datum.priority === 'low' ? 'bg-orange-500' : 'bg-blue-500'}
+            />
+            }
           </Table.Cell>
           <Table.Cell>
             {datum.status}
@@ -31,10 +36,16 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
           <Table.Cell>
             {moment(datum.udpatedAt).format('LLL')}
           </Table.Cell>
-          <Table.Cell>
-            <Edit />
-            <Delete />
-            <Eye />
+          <Table.Cell className='flex space-x-3'>
+            <Tooltip content="View Task">
+              <Eye color="blue" className='cursor-pointer h-5 w-5' />
+            </Tooltip>
+            <Tooltip content="Edit Task">
+              <Edit color="orange" className='cursor-pointer h-5 w-5' />
+            </Tooltip>
+            <Tooltip content="Delete Task">
+              <Trash color="red" className='cursor-pointer h-5 w-5' />
+            </Tooltip>
           </Table.Cell>
         </Table.Row>
       ) : <Table.Row>

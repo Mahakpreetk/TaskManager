@@ -5,10 +5,10 @@ import { useAppDispatch, useAppSelector } from './hook/redux';
 import Auth from './pages/auth/Auth';
 import CreateAccountPage from './pages/auth/create_account/CreateAccountPage';
 import LoginPage from './pages/auth/login/LoginPage';
-import { setupAxiosResponseInterceptors } from './store/axios';
 import Dashboard from './pages/dashboard/Dashboard';
-import UsersPage from './pages/users/UsersPage';
 import TasksPage from './pages/tasks/TasksPage';
+import UsersPage from './pages/users/UsersPage';
+import { setupAxiosResponseInterceptors } from './store/axios';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();

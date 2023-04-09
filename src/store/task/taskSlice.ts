@@ -28,7 +28,7 @@ export const taskSlice = createSlice({
     builder.addCase(getAllTasks.pending, asyncIsPending)
     builder.addCase(getAllTasks.rejected, asyncIsRejected)
     builder.addCase(getAllTasks.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
+      state.status = null;
       state.tasks = action.payload.tasks;
     })
     builder.addCase(updateTaskById.pending, asyncIsPending)
