@@ -6,10 +6,13 @@ import Chip from 'src/components/Chip'
 import { Task } from 'src/models/task'
 
 interface TasksTableBodyProps {
-  data: Task[]
+  data: Task[],
+  onDelete: (id: string) => void
+  onEdit: (id: string) => void
+  onView: (id: string) => void
 }
 
-const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
+const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data, onEdit, onDelete, onView }) => {
   return (
     <Table.Body className="divide-y">
       {data.length > 0 ? data.map(datum =>
@@ -25,7 +28,11 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
             }
           </Table.Cell>
           <Table.Cell>
-            {datum.status}
+            {<Chip
+              child={datum.status}
+              bgColor={datum.status === 'completed' ? 'bg-green-500' : datum.status === 'in-progress' ? 'bg-orange-500' : 'bg-blue-500'}
+            />
+            }
           </Table.Cell>
           <Table.Cell>
             {moment(datum.due_date).fromNow()}
@@ -38,13 +45,13 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data }) => {
           </Table.Cell>
           <Table.Cell className='flex space-x-3'>
             <Tooltip content="View Task">
-              <Eye color="blue" className='cursor-pointer h-5 w-5' />
+              <Eye onClick={() => onView(datum._id!)} color="blue" className='cursor-pointer h-5 w-5' />
             </Tooltip>
             <Tooltip content="Edit Task">
-              <Edit color="orange" className='cursor-pointer h-5 w-5' />
+              <Edit onClick={() => onEdit(datum._id!)} color="orange" className='cursor-pointer h-5 w-5' />
             </Tooltip>
             <Tooltip content="Delete Task">
-              <Trash color="red" className='cursor-pointer h-5 w-5' />
+              <Trash onClick={() => onDelete(datum._id!)} color="red" className='cursor-pointer h-5 w-5' />
             </Tooltip>
           </Table.Cell>
         </Table.Row>

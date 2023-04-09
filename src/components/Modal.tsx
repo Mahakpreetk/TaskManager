@@ -5,13 +5,14 @@ import { AsyncState } from 'src/models/store';
 interface CustomModalProps {
   show: boolean,
   status?: AsyncState,
+  color?: string,
   title: string,
   body: React.ReactNode
   onCancel: () => void,
   onProceed?: () => void,
 }
 
-const CustomModal: React.FC<CustomModalProps> = ({ onProceed, onCancel, show, title, body, status }) => {
+const CustomModal: React.FC<CustomModalProps> = ({ onProceed, onCancel, show, title, body, status, color }) => {
   const portalRoot = document.getElementById('portal')!;
   return (
     <Modal
@@ -22,14 +23,14 @@ const CustomModal: React.FC<CustomModalProps> = ({ onProceed, onCancel, show, ti
       onClose={onCancel}
     >
       <Modal.Header>
-        {title}
+        <h1 className={`text-${color}-600`}>{title}</h1>
       </Modal.Header>
       <Modal.Body>
         {body}
       </Modal.Body>
       <Modal.Footer>
         {onProceed &&
-          <Button disabled={status === 'pending'} onClick={onProceed}>
+          <Button className={`bg-${color}-600 hover:bg-${color}-600`} disabled={status === 'pending'} onClick={onProceed}>
             {status === 'pending' ?
               <div className="mr-5">
                 <Spinner
