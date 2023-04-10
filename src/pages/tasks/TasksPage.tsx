@@ -1,6 +1,6 @@
-import { Button, Spinner } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
-import { Plus } from 'react-feather'
+import { Button, Spinner, TextInput } from 'flowbite-react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { Filter, Plus } from 'react-feather'
 import { notify } from 'reapop'
 import CustomModal from 'src/components/Modal'
 import NavTabs from 'src/components/NavTabs'
@@ -14,6 +14,8 @@ import TasksTableBody from './TasksTableBody'
 const TasksPage: React.FC = () => {
   const tabsItems: TaskStatus[] = ['all', 'not-started', 'completed', 'in-progress'];
   const [activeTab, setActiveTab] = useState(0)
+  const [systemTasks, setSystemTasks] = useState<Task[]>([])
+  const [searchFieldVal, setSearchFieldVal] = useState('');
   const [isEditMode, setIsEditMode] = useState<boolean | null>(null);
   const [task, setTask] = useState({
     due_date: new Date(),
@@ -31,6 +33,12 @@ const TasksPage: React.FC = () => {
   }, [activeTab])
 
   useEffect(() => {
+    if (tasks) {
+      setSystemTasks(tasks);
+    }
+  }, [tasks])
+
+  useEffect(() => {
     if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
       setShowModal({ confirm_delete: false, new_task: false })
@@ -44,6 +52,16 @@ const TasksPage: React.FC = () => {
     }
     // eslint-disable-next-line
   }, [status]);
+
+  const handleTaskSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const results = tasks.filter(task =>
+      task.title.toLowerCase().includes(value.toLowerCase()) ||
+      task.description.toLowerCase().includes(value.toLowerCase())
+    )
+    setSearchFieldVal(value);
+    setSystemTasks(results);
+  }
 
   return (
     <div>
@@ -101,12 +119,21 @@ const TasksPage: React.FC = () => {
           setActiveTab(tab)
         }}
       />
+      <div className='mb-3 lg:mb-10 flex justify-between items-center lg:space-x-4'>
+        <TextInput
+          className='flex-1'
+          onChange={handleTaskSearch}
+          value={searchFieldVal}
+          placeholder={`Search ${tabsItems[activeTab]} tasks by name or description`}
+        />
+        <Filter className=' text-gray-600' />
+      </div>
       {status === 'pending' ? <div className="text-center">
         <Spinner size={'lg'} />
       </div> : <CustomTable
         heading={['Title', 'Priority', 'Status', 'Due Date', 'Created On', 'Updated On', 'Actions']}
         tbody={<TasksTableBody
-          data={tasks}
+          data={systemTasks}
           onDelete={(task) => {
             setTask(task);
             setShowModal({ ...showModal, confirm_delete: true });
