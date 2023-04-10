@@ -1,15 +1,16 @@
 import { Table, Tooltip } from 'flowbite-react'
 import moment from 'moment'
 import React from 'react'
-import { Trash } from 'react-feather'
+import { Edit, Trash } from 'react-feather'
 import { User } from 'src/models/user'
 
 interface UsersTableBodyProps {
   data: User[],
   onUserDelete: (user: User) => void
+  onUserEdit: (user: User) => void
 }
 
-const UsersTableBody: React.FC<UsersTableBodyProps> = ({ data, onUserDelete }) => {
+const UsersTableBody: React.FC<UsersTableBodyProps> = ({ data, onUserDelete, onUserEdit }) => {
   return (
     <Table.Body className="divide-y text-xs md:text-md">
       {data.length > 0 ? data.map(datum =>
@@ -24,6 +25,9 @@ const UsersTableBody: React.FC<UsersTableBodyProps> = ({ data, onUserDelete }) =
             {moment(datum.createdAt).fromNow()}
           </Table.Cell>          
           <Table.Cell>
+            <Tooltip content="Edit User">
+              <Edit onClick={() => onUserEdit(datum)} color="orange" className='cursor-pointer h-5 w-5' />
+            </Tooltip>
             <Tooltip content="Delete User">
               <Trash onClick={() => onUserDelete(datum)} color="red" className='cursor-pointer h-5 w-5' />
             </Tooltip>

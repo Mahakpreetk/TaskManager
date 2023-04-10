@@ -26,11 +26,8 @@ const CreateAccountPage: React.FC = () => {
     } else if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
       setTimeout(() => {
-        navigate('/login')
+        navigate('/auth/login')
       }, 100);
-      return () => {
-        dispatch(clearAuthState())
-      }
     }
     // eslint-disable-next-line
   }, [status])

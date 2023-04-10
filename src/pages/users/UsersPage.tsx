@@ -65,6 +65,10 @@ const UsersPage: React.FC = () => {
             setUser(user);
             setShowModal({ ...showModal, confirm_delete: true });
           }}
+          onUserEdit={(user) => { 
+            setUser(user);
+            setShowModal({ ...showModal, new_user: true });
+          }}
         />}
       />}
     </div>
