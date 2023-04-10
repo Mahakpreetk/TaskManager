@@ -79,19 +79,19 @@ const TasksPage: React.FC = () => {
         onCancel={() => setShowModal({ ...showModal, confirm_delete: false })}
         body={
           <>
-            <h3 className="text-lg font-normal text-gray-500 dark:text-gray-400">
+            <h3 className="md:text-lg text-xs font-normal text-gray-500 dark:text-gray-400">
               Are you sure you want to delete this task?
             </h3>
           </>
         }
       />
-      <div className='flex justify-between items-center'>
-        <h1 className='font-medium text-blue-800 text-2xl'>TASKS</h1>
+      <div className='flex mb-6 md:mb-0 justify-between items-center'>
+        <h1 className='font-medium text-blue-800 text-lg md:text-2xl'>TASKS</h1>
         <Button onClick={() => {
           setIsEditMode(null);
           setShowModal({ ...showModal, new_task: true })
         }}>
-          <Plus className="mr-2 h-5 w-5" />
+          <Plus className="mr-2 md:h-5 text-xs md:text-base md:w-5 h-3 w-3" />
           Add Task
         </Button>
       </div>

@@ -4,10 +4,11 @@ import { NavLink } from 'react-router-dom'
 interface SidebarLinkProps {
   title: string,
   icon: React.ReactNode,
-  path: string
+  path: string,
+  onSelect: () => void
 }
 
-const SidebarLink: React.FC<SidebarLinkProps> = ({ title, icon, path }) => {
+const SidebarLink: React.FC<SidebarLinkProps> = ({ title, icon, path, onSelect }) => {
   const activeStyle = {
     color: 'rgb(23 37 84)',
     // color: '#0D47A1',
@@ -18,8 +19,9 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({ title, icon, path }) => {
   return (
     <li className="pb-2 pt-3">
       <NavLink to={path}
+        onClick={onSelect}
         style={({ isActive }) => isActive ? activeStyle : undefined}
-        className="inline-flex rounded-lg hover:bg-blue-900 px-4 py-2 space-x-2 text-neutral-300 font-medium items-center w-full transition-colors duration-150">
+        className="inline-flex text-sm md:text-base rounded-lg hover:bg-blue-900 px-4 py-2 space-x-2 text-neutral-300 font-medium items-center w-full transition-colors duration-700">
         {icon}
         <span>{title}</span>
       </NavLink>

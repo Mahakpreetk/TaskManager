@@ -23,7 +23,7 @@ const NewTaskModalBody: React.FC<NewTaskModalBodyProps> = ({ newTask, setTask, i
   }
 
   return (
-    <div>
+    <div className='text-xs md:text-base'>
       <div className="mb-2 block">
         <Label
           htmlFor="title"

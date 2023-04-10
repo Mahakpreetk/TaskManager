@@ -12,9 +12,10 @@ const NavTabs: React.FC<NavTabsProps> = ({ activeTab, onTabChange, items }) => {
 
   return (
     <>
-      <Tabs.Group
+      <Tabs.Group        
         aria-label="Default tabs"
         ref={tabsRef}
+        className=" text-red-800"
         onActiveTabChange={onTabChange}
       >
         {items.map((item, i) =>

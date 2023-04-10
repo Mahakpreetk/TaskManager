@@ -14,7 +14,7 @@ interface TasksTableBodyProps {
 
 const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data, onEdit, onDelete, onView }) => {
   return (
-    <Table.Body className="divide-y">
+    <Table.Body className="divide-y text-xs md:text-md">
       {data.length > 0 ? data.map(datum =>
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
           <Table.Cell className="max-w-xs text-ellipsis truncate font-medium text-gray-900 dark:text-white">

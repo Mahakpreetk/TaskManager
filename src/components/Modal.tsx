@@ -22,15 +22,15 @@ const CustomModal: React.FC<CustomModalProps> = ({ onProceed, onCancel, show, ti
       size={'md'}
       onClose={onCancel}
     >
-      <Modal.Header>
-        <h1 className={`text-${color}-600`}>{title}</h1>
+      <Modal.Header className=' text-sm'>
+        <h1 className={`text-sm md:text-base text-${color}-600`}>{title}</h1>
       </Modal.Header>
       <Modal.Body>
         {body}
       </Modal.Body>
       <Modal.Footer>
         {onProceed &&
-          <Button className={`bg-${color}-600 hover:bg-${color}-600`} disabled={status === 'pending'} onClick={onProceed}>
+          <Button className={`bg-${color}-600 text-sm hover:bg-${color}-600`} disabled={status === 'pending'} onClick={onProceed}>
             {status === 'pending' ?
               <div className="mr-5">
                 <Spinner

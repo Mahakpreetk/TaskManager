@@ -16,8 +16,8 @@ const UsersPage: React.FC = () => {
 
   return (
     <div>
-      <h1 className='font-medium text-blue-800 text-2xl'>USERS</h1>
-      <p className=' text-sm text-gray-500 mb-7'>All users registered on the system.</p>
+      <h1 className='font-medium text-blue-800 text-lg md:text-2xl'>USERS</h1>
+      <p className='text-xs md:text-sm text-gray-500 mb-7'>All users registered on the system.</p>
       {status === 'pending' ? <div className="text-center">
         <Spinner size={'lg'} />
       </div> : <CustomTable
