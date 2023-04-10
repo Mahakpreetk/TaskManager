@@ -10,6 +10,7 @@ export interface BaseState {
 
 export interface AuthState extends BaseState {
   user: User | null,
+  users: User[],
 }
 
 export interface TaskState extends BaseState {

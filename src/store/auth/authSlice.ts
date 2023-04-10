@@ -3,7 +3,7 @@ import { ADRIOT_USER_INFO_KEY, ADRIOT_USER_TOKEN_KEY } from 'src/contants';
 import { AuthState } from 'src/models/store';
 import { asyncIsFulfilled, asyncIsPending, asyncIsRejected } from '../asyncConfig';
 import {
-  createUserAccount, updateUserAccount,
+  createUserAccount, getUsers, updateUserAccount,
   userLogin,
   userLogout,
   userPasswordReset
@@ -13,6 +13,7 @@ const initialState: AuthState = {
   message: '',
   user: null,
   status: null,
+  users: []
 }
 
 export const authSlice = createSlice({
@@ -48,6 +49,12 @@ export const authSlice = createSlice({
       state.status = 'fulfilled';
       state.message = action.payload.message;
       state.user = action.payload.user;
+    })
+    builder.addCase(getUsers.pending, asyncIsPending)
+    builder.addCase(getUsers.rejected, asyncIsRejected)
+    builder.addCase(getUsers.fulfilled, (state, action) => {
+      state.status = null;
+      state.users = action.payload.users;
     })
     builder.addCase(userPasswordReset.pending, asyncIsPending)
     builder.addCase(userPasswordReset.fulfilled, asyncIsFulfilled)

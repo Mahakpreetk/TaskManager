@@ -17,6 +17,19 @@ export const createUserAccount = createAsyncThunk(
   }
 );
 
+export const getUsers = createAsyncThunk(
+  'auth/getUsers',
+  async (_, { fulfillWithValue, rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.get('/users');
+      return fulfillWithValue(data);
+    } catch (err) {
+      const error = err as AxiosError;
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 export const updateUserAccount = createAsyncThunk(
   'auth/updateUserAccount',
   async (user: User, { fulfillWithValue, rejectWithValue, dispatch }) => {

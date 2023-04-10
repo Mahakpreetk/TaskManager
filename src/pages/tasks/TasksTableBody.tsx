@@ -7,9 +7,9 @@ import { Task } from 'src/models/task'
 
 interface TasksTableBodyProps {
   data: Task[],
-  onDelete: (id: string) => void
-  onEdit: (id: string) => void
-  onView: (id: string) => void
+  onDelete: (task: Task) => void
+  onEdit: (task: Task) => void
+  onView: (task: Task) => void
 }
 
 const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data, onEdit, onDelete, onView }) => {
@@ -17,8 +17,8 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data, onEdit, onDelete,
     <Table.Body className="divide-y">
       {data.length > 0 ? data.map(datum =>
         <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-            {datum.title}
+          <Table.Cell className="max-w-xs text-ellipsis truncate font-medium text-gray-900 dark:text-white">
+            <p className='text-ellipsis'>{datum.title}</p>
           </Table.Cell>
           <Table.Cell>
             {<Chip
@@ -45,13 +45,13 @@ const TasksTableBody: React.FC<TasksTableBodyProps> = ({ data, onEdit, onDelete,
           </Table.Cell>
           <Table.Cell className='flex space-x-3'>
             <Tooltip content="View Task">
-              <Eye onClick={() => onView(datum._id!)} color="blue" className='cursor-pointer h-5 w-5' />
+              <Eye onClick={() => onView(datum)} color="blue" className='cursor-pointer h-5 w-5' />
             </Tooltip>
             <Tooltip content="Edit Task">
-              <Edit onClick={() => onEdit(datum._id!)} color="orange" className='cursor-pointer h-5 w-5' />
+              <Edit onClick={() => onEdit(datum)} color="orange" className='cursor-pointer h-5 w-5' />
             </Tooltip>
             <Tooltip content="Delete Task">
-              <Trash onClick={() => onDelete(datum._id!)} color="red" className='cursor-pointer h-5 w-5' />
+              <Trash onClick={() => onDelete(datum)} color="red" className='cursor-pointer h-5 w-5' />
             </Tooltip>
           </Table.Cell>
         </Table.Row>

@@ -7,17 +7,18 @@ import NavTabs from 'src/components/NavTabs'
 import CustomTable from 'src/components/table'
 import { useAppDispatch, useAppSelector } from 'src/hook/redux'
 import { Task, TaskStatus } from 'src/models/task'
-import { addTask, deleteTaskById, getAllTasks } from 'src/store/task/taskService'
+import { addTask, deleteTaskById, getAllTasks, updateTaskById } from 'src/store/task/taskService'
 import NewTaskModalBody from './NewTaskModalBody'
 import TasksTableBody from './TasksTableBody'
 
 const TasksPage: React.FC = () => {
   const tabsItems: TaskStatus[] = ['all', 'not-started', 'completed', 'in-progress'];
   const [activeTab, setActiveTab] = useState(0)
-  const [selectedTaskId, setSelectedTaskId] = useState<string>();
+  const [isEditMode, setIsEditMode] = useState<boolean | null>(null);
   const [task, setTask] = useState({
     assigned_to: '643003eeb18af0fb9e7d3dac',
-    due_date: new Date()
+    due_date: new Date(),
+    priority: 'high'
   } as Task)
   const dispatch = useAppDispatch();
   const [showModal, setShowModal] = useState({
@@ -34,6 +35,11 @@ const TasksPage: React.FC = () => {
     if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
       setShowModal({ confirm_delete: false, new_task: false })
+      setTask({
+        assigned_to: '643003eeb18af0fb9e7d3dac',
+        due_date: new Date(),
+        priority: 'high'
+      } as Task)
       dispatch(getAllTasks(tabsItems[activeTab]))
     } else if (status === 'rejected') {
       dispatch(notify(message, 'error'))
@@ -45,14 +51,20 @@ const TasksPage: React.FC = () => {
     <div>
       <CustomModal
         show={showModal.new_task}
-        title={'Create New Task'}
+        status={status}
+        title={isEditMode === null ? 'Create New Task' : isEditMode ? 'Edit Task' : 'View Task'}
         onProceed={() => {
-          dispatch(addTask(task));
+          if (isEditMode) {
+            dispatch(updateTaskById(task))
+          } else {
+            dispatch(addTask(task));
+          }
         }}
         onCancel={() => setShowModal({ ...showModal, new_task: false })}
         body={
           <NewTaskModalBody
             setTask={setTask}
+            isEditMode={isEditMode}
             newTask={task}
           />
         }
@@ -63,7 +75,7 @@ const TasksPage: React.FC = () => {
         color={'red'}
         status={status}
         onProceed={() => {
-          dispatch(deleteTaskById(selectedTaskId!));
+          dispatch(deleteTaskById(task?._id!));
         }}
         onCancel={() => setShowModal({ ...showModal, confirm_delete: false })}
         body={
@@ -76,7 +88,10 @@ const TasksPage: React.FC = () => {
       />
       <div className='flex justify-between items-center'>
         <h1 className='font-medium text-blue-800 text-2xl'>TASKS</h1>
-        <Button onClick={() => setShowModal({ ...showModal, new_task: true })}>
+        <Button onClick={() => {
+          setIsEditMode(null);
+          setShowModal({ ...showModal, new_task: true })
+        }}>
           <Plus className="mr-2 h-5 w-5" />
           Add Task
         </Button>
@@ -94,15 +109,21 @@ const TasksPage: React.FC = () => {
         heading={['Title', 'Priority', 'Status', 'Due Date', 'Created On', 'Updated On', 'Actions']}
         tbody={<TasksTableBody
           data={tasks}
-          onDelete={(id) => {
-            setSelectedTaskId(id);
+          onDelete={(task) => {
+            setTask(task);
             setShowModal({ ...showModal, confirm_delete: true });
           }}
-          onEdit={function (id: string): void {
-            throw new Error('Function not implemented.')
-          }} onView={function (id: string): void {
-            throw new Error('Function not implemented.')
-          }} />}
+          onEdit={(task) => {
+            setTask(task);
+            setIsEditMode(true);
+            setShowModal({ ...showModal, new_task: true });
+          }}
+          onView={(task) => {
+            setTask(task);
+            setIsEditMode(false);
+            setShowModal({ ...showModal, new_task: true });
+          }}
+        />}
       />}
     </div>
   )

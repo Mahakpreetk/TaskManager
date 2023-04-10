@@ -1,16 +1,23 @@
 import { Label, Select, TextInput, Textarea } from 'flowbite-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Task, TaskPriority } from 'src/models/task'
 import Datepicker from "tailwind-datepicker-react"
 
 interface NewTaskModalBodyProps {
   newTask: Task,
+  isEditMode: boolean | null,
   setTask: React.Dispatch<React.SetStateAction<Task>>
 }
 
-const NewTaskModalBody: React.FC<NewTaskModalBodyProps> = ({ newTask, setTask }) => {
+const NewTaskModalBody: React.FC<NewTaskModalBodyProps> = ({ newTask, setTask, isEditMode }) => {
   const [show, setShow] = useState<boolean>(false)
+  const disabled = isEditMode == null ? false : !isEditMode;
 
+  useEffect(() => {
+    setShow(!disabled)
+  }, [disabled])
+  
+  console.log('MODAL:: ', disabled, show);  
   const handleClose = (state: boolean) => {
     setShow(state)
   }
@@ -29,6 +36,7 @@ const NewTaskModalBody: React.FC<NewTaskModalBodyProps> = ({ newTask, setTask })
         name="title"
         placeholder="eg: Get the material ready"
         required={true}
+        disabled={disabled}
         shadow={true}
         value={newTask.title}
         onChange={({ target }) => setTask({ ...newTask, title: target.value })}
@@ -46,6 +54,7 @@ const NewTaskModalBody: React.FC<NewTaskModalBodyProps> = ({ newTask, setTask })
         required={true}
         style={{ fontSize: '15px' }}
         shadow={true}
+        disabled={disabled}
         value={newTask.description}
         onChange={({ target }) => setTask({ ...newTask, description: target.value })}
       />
@@ -57,6 +66,7 @@ const NewTaskModalBody: React.FC<NewTaskModalBodyProps> = ({ newTask, setTask })
       </div>
       <Select
         id="priority"
+        disabled={disabled}
         onChange={({target}) => setTask({ ...newTask, priority: target.value.toLowerCase() as TaskPriority })}
         required={true}
       >
