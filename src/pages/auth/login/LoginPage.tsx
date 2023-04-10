@@ -1,6 +1,7 @@
 
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
+import { useNavigate } from 'react-router';
 import { notify } from 'reapop';
 import { useAppDispatch, useAppSelector } from 'src/hook/redux';
 import { UserCredentials } from 'src/models/user';
@@ -10,20 +11,23 @@ import LoginForm from './LoginForm';
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { status, message } = useAppSelector((state) => state.auth)
   const [credentials, setCredentials] = useState<UserCredentials>({
     email_address: '',
     password: '',
   })
 
+  console.log('status', status);
+
   useEffect(() => {
     if (status === 'rejected') {
       dispatch(notify(message, 'error'))
+      dispatch(clearAuthState())
     } else if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
-    }
-    return () => {
       dispatch(clearAuthState())
+      navigate('/')
     }
     // eslint-disable-next-line
   }, [status])
