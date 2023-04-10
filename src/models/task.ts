@@ -3,7 +3,7 @@ export type TaskPriority = 'high' | 'low' | 'medium';
 
 export interface Task {
   _id?: string
-  assigned_to: string,
+  assigned_to?: string,
   priority: TaskPriority,
   status: TaskStatus,
   due_date: Date,

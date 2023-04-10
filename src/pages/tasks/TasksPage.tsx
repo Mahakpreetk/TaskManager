@@ -36,7 +36,6 @@ const TasksPage: React.FC = () => {
       dispatch(notify(message, 'success'))
       setShowModal({ confirm_delete: false, new_task: false })
       setTask({
-        assigned_to: '643003eeb18af0fb9e7d3dac',
         due_date: new Date(),
         priority: 'high'
       } as Task)

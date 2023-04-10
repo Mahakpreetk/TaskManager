@@ -9,6 +9,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import TasksPage from './pages/tasks/TasksPage';
 import UsersPage from './pages/users/UsersPage';
 import { setupAxiosResponseInterceptors } from './store/axios';
+import NotFoundPage from './pages/404/NotFoundPage';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -42,6 +43,7 @@ const App: React.FC = () => {
         <Route path='login' element={<LoginPage />} />
         <Route path='create-account' element={<CreateAccountPage />} />
       </Route>
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   </>
 }

@@ -13,9 +13,10 @@ interface LoginFormProps {
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, credentials, onChange, status }) => {
+  console.log('status', status);  
   return (
-    <form onSubmit={onSubmit} className='form-control p-5 w-1/3 flex justify-center items-center'>
-      <div className='w-full p-10'>
+    <form onSubmit={onSubmit} className='form-control xl:p-5 lg:w-1/3 w-full flex justify-center items-center'>
+      <div className='w-full xl:p-10 md:p-5 p-10'>
         <h3 className="text-xl font-medium text-center text-blue-900 dark:text-white">
           Welcome, Sign in.
         </h3>
