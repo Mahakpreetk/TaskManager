@@ -79,7 +79,7 @@ const TasksPage: React.FC = () => {
         onCancel={() => setShowModal({ ...showModal, confirm_delete: false })}
         body={
           <>
-            <h3 className="md:text-lg text-xs font-normal text-gray-500 dark:text-gray-400">
+            <h3 className="md:text-lg text-sm font-normal text-gray-500 dark:text-gray-400">
               Are you sure you want to delete this task?
             </h3>
           </>
