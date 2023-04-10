@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ADRIOT_USER_INFO_KEY } from 'src/contants';
+import { ADRIOT_USER_INFO_KEY, ADRIOT_USER_TOKEN_KEY } from 'src/contants';
 import { AuthState } from 'src/models/store';
 import { asyncIsFulfilled, asyncIsPending, asyncIsRejected } from '../asyncConfig';
 import {
@@ -23,6 +23,7 @@ export const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload.user;
       localStorage.setItem(ADRIOT_USER_INFO_KEY, JSON.stringify(action.payload?.user));
+      localStorage.setItem(ADRIOT_USER_TOKEN_KEY, action.payload?.token);
     },
     getUser: (state) => {
       const user = JSON.parse(localStorage.getItem(ADRIOT_USER_INFO_KEY)!);
@@ -30,6 +31,7 @@ export const authSlice = createSlice({
     },
     clearUser: (state) => {
       localStorage.removeItem(ADRIOT_USER_INFO_KEY);
+      localStorage.removeItem(ADRIOT_USER_TOKEN_KEY);
       state.user = null;
     },
     clearAuthState: (state) => {

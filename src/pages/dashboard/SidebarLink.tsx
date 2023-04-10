@@ -21,7 +21,7 @@ const SidebarLink: React.FC<SidebarLinkProps> = ({ title, icon, path, onSelect }
       <NavLink to={path}
         onClick={onSelect}
         style={({ isActive }) => isActive ? activeStyle : undefined}
-        className="inline-flex text-sm md:text-base rounded-lg hover:bg-blue-900 px-4 py-2 space-x-2 text-neutral-300 font-medium items-center w-full transition-colors duration-700">
+        className="inline-flex text-sm lg:text-base rounded-lg hover:bg-blue-900 px-4 py-2 space-x-1 lg:space-x-2 text-neutral-300 font-medium items-center w-full transition-colors duration-700">
         {icon}
         <span>{title}</span>
       </NavLink>
