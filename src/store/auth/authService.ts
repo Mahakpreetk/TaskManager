@@ -59,9 +59,10 @@ export const userPasswordReset = createAsyncThunk(
 
 export const userLogin = createAsyncThunk(
   'auth/login',
-  async (credentials: UserCredentials, { fulfillWithValue, rejectWithValue }) => {
+  async (credentials: UserCredentials, { fulfillWithValue, rejectWithValue, dispatch }) => {
     try {
       const { data } = await axios.post('/users/login', credentials);
+      dispatch(setUser(data));
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
