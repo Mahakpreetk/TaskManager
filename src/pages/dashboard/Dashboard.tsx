@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Folder, LogOut, Menu, Users } from 'react-feather'
 import { Outlet, useLocation, useNavigate } from 'react-router'
+import { notify } from 'reapop'
 import { useAppDispatch, useAppSelector } from 'src/hook/redux'
 import { getAdriotUser } from 'src/store/asyncConfig'
-import SidebarLink from './SidebarLink'
 import { clearAuthState, clearUser } from 'src/store/auth/authSlice'
+import SidebarLink from './SidebarLink'
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const Dashboard: React.FC = () => {
               setShowMenu(false);
               dispatch(clearUser());
               dispatch(clearAuthState());
+              dispatch(notify('Logout successful'));
               navigator('/auth/login');
             }} />
           </div>
