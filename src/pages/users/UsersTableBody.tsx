@@ -22,9 +22,12 @@ const UsersTableBody: React.FC<UsersTableBodyProps> = ({ data, onUserDelete, onU
             {datum.email_address}
           </Table.Cell>
           <Table.Cell>
-            {moment(datum.createdAt).fromNow()}
+            {moment(datum.createdAt).format('LLL')}
           </Table.Cell>          
           <Table.Cell>
+            {moment(datum.updatedAt).format('LLL')}
+          </Table.Cell>          
+          <Table.Cell className='flex space-x-3'>
             <Tooltip content="Edit User">
               <Edit onClick={() => onUserEdit(datum)} color="orange" className='cursor-pointer h-5 w-5' />
             </Tooltip>

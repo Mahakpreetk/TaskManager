@@ -8,12 +8,12 @@ import { UserCredentials } from 'src/models/user';
 interface LoginFormProps {
   onSubmit: (e: FormEvent) => void
   credentials: UserCredentials,
+  onForgetPassword: () => void
   onChange: (e: ChangeEvent<HTMLInputElement>) => void,
   status: AsyncState
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, credentials, onChange, status }) => {
-  console.log('status', status);  
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, credentials, onChange, status, onForgetPassword }) => {
   return (
     <form onSubmit={onSubmit} className='form-control xl:p-5 lg:w-1/3 w-full flex justify-center items-center'>
       <div className='w-full xl:p-10 md:p-5 p-10'>
@@ -57,6 +57,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, credentials, onChange, 
         <div className='mt-2 text-right'>
           <button
             type={'button'}
+            onClick={onForgetPassword}
             disabled={status === 'pending'}
             className="text-sm text-blue-700 hover:underline dark:text-blue-500"
           >

@@ -1,2 +1,1 @@
-export const ADRIOT_USER_INFO_KEY = 'dapscnect-agent';
-export const ADRIOT_USER_TOKEN_KEY = 'dapscnect-agent-token';
+export const ADRIOT_USER_INFO_KEY = 'adriot_user_info';

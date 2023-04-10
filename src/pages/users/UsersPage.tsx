@@ -1,11 +1,12 @@
 import { Spinner } from 'flowbite-react';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { notify } from 'reapop';
 import CustomModal from 'src/components/Modal';
 import CustomTable from 'src/components/table';
 import { useAppDispatch, useAppSelector } from 'src/hook/redux';
 import { User } from 'src/models/user';
-import { deleteUserAccount, getUsers } from 'src/store/auth/authService';
+import { deleteUserAccount, getUsers, updateUserAccount } from 'src/store/auth/authService';
+import UserTableModalBody from './UserTableModalBody';
 import UsersTableBody from './UsersTableBody';
 
 const UsersPage: React.FC = () => {
@@ -25,8 +26,7 @@ const UsersPage: React.FC = () => {
     if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
       setShowModal({ confirm_delete: false, new_user: false })
-      setUser({
-      } as User)
+      setUser({} as User)
       dispatch(getUsers())
     } else if (status === 'rejected') {
       dispatch(notify(message, 'error'))
@@ -34,8 +34,25 @@ const UsersPage: React.FC = () => {
     // eslint-disable-next-line
   }, [status]);
 
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  }
+
   return (
     <div>
+      <CustomModal
+        show={showModal.new_user}
+        title={'Update User'}
+        status={status}
+        onProceed={() => {
+          dispatch(updateUserAccount(user));
+        }}
+        onCancel={() => setShowModal({ ...showModal, new_user: false })}
+        body={
+          <UserTableModalBody info={user} onChange={handleInputChange} />
+        }
+      />
       <CustomModal
         show={showModal.confirm_delete}
         title={'Confirm Delete'}
@@ -58,14 +75,14 @@ const UsersPage: React.FC = () => {
       {status === 'pending' ? <div className="text-center">
         <Spinner size={'lg'} />
       </div> : <CustomTable
-        heading={['Username', 'Email Address', 'Date Registered', 'Actions']}
+        heading={['Username', 'Email Address', 'Date Registered', 'Updated On','Actions']}
         tbody={<UsersTableBody
           data={users}
           onUserDelete={(user) => {
             setUser(user);
             setShowModal({ ...showModal, confirm_delete: true });
           }}
-          onUserEdit={(user) => { 
+          onUserEdit={(user) => {
             setUser(user);
             setShowModal({ ...showModal, new_user: true });
           }}

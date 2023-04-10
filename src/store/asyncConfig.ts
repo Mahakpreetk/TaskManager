@@ -1,4 +1,8 @@
+import { ADRIOT_USER_INFO_KEY } from "src/contants";
 import { BaseState } from "src/models/store";
+import { User } from "src/models/user";
+
+export const getAdriotUser = () => JSON.parse(localStorage.getItem(ADRIOT_USER_INFO_KEY)!) as User;
 
 export const asyncIsPending = (state: BaseState) => {
   state.status = 'pending';

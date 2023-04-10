@@ -34,7 +34,7 @@ export const updateUserAccount = createAsyncThunk(
   'auth/updateUserAccount',
   async (user: User, { fulfillWithValue, rejectWithValue, dispatch }) => {
     try {
-      const { data } = await axios.put('/users', user);
+      const { data } = await axios.put(`/users/${user._id}`, user);
       dispatch(setUser(data));
       return fulfillWithValue(data);
     } catch (err) {
@@ -61,7 +61,7 @@ export const userPasswordReset = createAsyncThunk(
   'auth/userPasswordReset',
   async (credentials: UserCredentials, { fulfillWithValue, rejectWithValue }) => {
     try {
-      const { data } = await axios.post('/users/change-password', credentials);
+      const { data } = await axios.patch('/users/change-password', credentials);
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
@@ -87,16 +87,6 @@ export const userLogin = createAsyncThunk(
 export const userLogout = createAsyncThunk(
   'auth/logout',
   async (_, { fulfillWithValue, rejectWithValue }) => {
-    try {
-
-    } catch (error) {
-      return rejectWithValue({ error });
-    }
-  }
-);
-
-export const resetPassword = createAsyncThunk(
-  'auth/resetPassword', async (_, { fulfillWithValue, rejectWithValue }) => {
     try {
 
     } catch (error) {

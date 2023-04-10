@@ -23,7 +23,7 @@ const CustomModal: React.FC<CustomModalProps> = ({ onProceed, onCancel, show, ti
       onClose={onCancel}
     >
       <Modal.Header className=' text-sm'>
-        <h1 className={`text-sm md:text-base text-${color}-600`}>{title}</h1>
+        <h1 className={`text-sm md:text-base lg:text-lg text-${color}-600`}>{title}</h1>
       </Modal.Header>
       <Modal.Body>
         {body}

@@ -6,8 +6,8 @@ import { notify } from 'reapop';
 import { useAppDispatch, useAppSelector } from 'src/hook/redux';
 import { User } from 'src/models/user';
 import { createUserAccount } from 'src/store/auth/authService';
-import { clearAuthState } from 'src/store/auth/authSlice';
 import CreateAccountForm from './CreateAccountForm';
+import { clearAuthState } from 'src/store/auth/authSlice';
 
 const CreateAccountPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -25,9 +25,10 @@ const CreateAccountPage: React.FC = () => {
       dispatch(notify(message, 'error'))
     } else if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
+      dispatch(clearAuthState());
       setTimeout(() => {
         navigate('/auth/login')
-      }, 100);
+      }, 300);
     }
     // eslint-disable-next-line
   }, [status])
