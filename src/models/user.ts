@@ -1,4 +1,5 @@
 export interface User extends UserCredentials {
+  _id?: string
   username: string,
 }
 

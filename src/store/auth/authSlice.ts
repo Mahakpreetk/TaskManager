@@ -3,7 +3,7 @@ import { ADRIOT_USER_INFO_KEY, ADRIOT_USER_TOKEN_KEY } from 'src/contants';
 import { AuthState } from 'src/models/store';
 import { asyncIsFulfilled, asyncIsPending, asyncIsRejected } from '../asyncConfig';
 import {
-  createUserAccount, getUsers, updateUserAccount,
+  createUserAccount, deleteUserAccount, getUsers, updateUserAccount,
   userLogin,
   userLogout,
   userPasswordReset
@@ -43,6 +43,9 @@ export const authSlice = createSlice({
     builder.addCase(createUserAccount.pending, asyncIsPending)
     builder.addCase(createUserAccount.rejected, asyncIsRejected)
     builder.addCase(createUserAccount.fulfilled, asyncIsFulfilled)
+    builder.addCase(deleteUserAccount.pending, asyncIsPending)
+    builder.addCase(deleteUserAccount.rejected, asyncIsRejected)
+    builder.addCase(deleteUserAccount.fulfilled, asyncIsFulfilled)
     builder.addCase(updateUserAccount.pending, asyncIsPending)
     builder.addCase(updateUserAccount.rejected, asyncIsRejected)
     builder.addCase(updateUserAccount.fulfilled, (state, action) => {

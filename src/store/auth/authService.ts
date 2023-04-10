@@ -44,6 +44,19 @@ export const updateUserAccount = createAsyncThunk(
   }
 );
 
+export const deleteUserAccount = createAsyncThunk(
+  'auth/deleteUserAccount',
+  async (id: string, { fulfillWithValue, rejectWithValue, dispatch }) => {
+    try {
+      const { data } = await axios.delete(`/users/${id}`);
+      return fulfillWithValue(data);
+    } catch (err) {
+      const error = err as AxiosError;
+      return rejectWithValue(error.response?.data);
+    }
+  }
+);
+
 export const userPasswordReset = createAsyncThunk(
   'auth/userPasswordReset',
   async (credentials: UserCredentials, { fulfillWithValue, rejectWithValue }) => {

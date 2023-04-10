@@ -16,7 +16,6 @@ const TasksPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0)
   const [isEditMode, setIsEditMode] = useState<boolean | null>(null);
   const [task, setTask] = useState({
-    assigned_to: '643003eeb18af0fb9e7d3dac',
     due_date: new Date(),
     priority: 'high'
   } as Task)
