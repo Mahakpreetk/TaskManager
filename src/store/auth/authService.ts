@@ -83,15 +83,3 @@ export const userLogin = createAsyncThunk(
     }
   }
 );
-
-export const userLogout = createAsyncThunk(
-  'auth/logout',
-  async (_, { fulfillWithValue, rejectWithValue }) => {
-    try {
-
-    } catch (error) {
-      return rejectWithValue({ error });
-    }
-  }
-);
-

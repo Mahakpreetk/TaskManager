@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Folder, LogOut, Menu, Users } from 'react-feather'
 import { Outlet, useLocation, useNavigate } from 'react-router'
-import { useAppSelector } from 'src/hook/redux'
+import { useAppDispatch, useAppSelector } from 'src/hook/redux'
 import { getAdriotUser } from 'src/store/asyncConfig'
 import SidebarLink from './SidebarLink'
+import { clearAuthState, clearUser } from 'src/store/auth/authSlice'
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
   const navigator = useNavigate();
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const [showMenu, setShowMenu] = useState(false);
 
@@ -37,7 +39,12 @@ const Dashboard: React.FC = () => {
             <SidebarLink title={'Tasks'} icon={<Folder className=' lg:h-6 lg:w-6 h-5 w-5' />} path={'/tasks'} onSelect={() => setShowMenu(false)} />
           </div>
           <div className='border-t flex-shrink border-slate-700'>
-            <SidebarLink title={'Log Out'} icon={<LogOut className=' lg:h-6 lg:w-6 h-5 w-5' />} path={'/#'} onSelect={() => setShowMenu(false)} />
+            <SidebarLink title={'Log Out'} icon={<LogOut className=' lg:h-6 lg:w-6 h-5 w-5' />} path={'/#'} onSelect={() => {
+              setShowMenu(false);
+              dispatch(clearUser());
+              dispatch(clearAuthState());
+              navigator('/auth/login');
+            }} />
           </div>
         </ul>
       </div>

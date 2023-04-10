@@ -5,7 +5,6 @@ import { asyncIsFulfilled, asyncIsPending, asyncIsRejected } from '../asyncConfi
 import {
   createUserAccount, deleteUserAccount, getUsers, updateUserAccount,
   userLogin,
-  userLogout,
   userPasswordReset
 } from './authService';
 
@@ -65,9 +64,6 @@ export const authSlice = createSlice({
     builder.addCase(userLogin.pending, asyncIsPending)
     builder.addCase(userLogin.fulfilled, asyncIsFulfilled)
     builder.addCase(userLogin.rejected, asyncIsRejected)
-    builder.addCase(userLogout.pending, asyncIsPending)
-    builder.addCase(userLogout.fulfilled, asyncIsFulfilled)
-    builder.addCase(userLogout.rejected, asyncIsRejected)
   }
 });
 
