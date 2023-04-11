@@ -2,6 +2,7 @@ import { Button, Spinner, TextInput } from 'flowbite-react'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Filter, Plus } from 'react-feather'
 import { notify } from 'reapop'
+import Chip from 'src/components/Chip'
 import CustomModal from 'src/components/Modal'
 import NavTabs from 'src/components/NavTabs'
 import CustomTable from 'src/components/table'
@@ -16,6 +17,7 @@ const TasksPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0)
   const [systemTasks, setSystemTasks] = useState<Task[]>([])
   const [searchFieldVal, setSearchFieldVal] = useState('');
+  const [filterBy, setFilterBy] = useState({ priority: '', date: '' })
   const [isEditMode, setIsEditMode] = useState<boolean | null>(null);
   const [task, setTask] = useState({
     due_date: new Date(),
@@ -23,7 +25,7 @@ const TasksPage: React.FC = () => {
   } as Task)
   const dispatch = useAppDispatch();
   const [showModal, setShowModal] = useState({
-    new_task: false, confirm_delete: false
+    new_task: false, confirm_delete: false, filter: false
   })
   const { tasks, status, message } = useAppSelector((state) => state.tasks);
 
@@ -41,7 +43,7 @@ const TasksPage: React.FC = () => {
   useEffect(() => {
     if (status === 'fulfilled') {
       dispatch(notify(message, 'success'))
-      setShowModal({ confirm_delete: false, new_task: false })
+      setShowModal({ confirm_delete: false, new_task: false, filter: false })
       setTask({
         due_date: new Date(),
         priority: 'high'
@@ -102,6 +104,56 @@ const TasksPage: React.FC = () => {
           </>
         }
       />
+      <CustomModal
+        show={showModal.filter}
+        title={'Filter Tasks'}
+        onProceed={() => {
+
+        }}
+        onCancel={() => setShowModal({ ...showModal, filter: false })}
+        body={
+          <>
+            <h1>Priority</h1>
+            <div className='flex space-x-4'>
+              <Chip
+                onSelect={(v) => setFilterBy({ ...filterBy, priority: v })}
+                child={<p className='px-2 cursor-pointer py-1'>High</p>}
+                bgColor={`${filterBy.priority === 'High' ? 'bg-blue-600' : 'bg-slate-400'}`}
+              />
+              <Chip
+                onSelect={(v) => setFilterBy({ ...filterBy, priority: v })}
+                child={<p className='px-2 cursor-pointer py-1'>Medium</p>}
+                bgColor={`${filterBy.priority === 'Medium' ? 'bg-blue-600' : 'bg-slate-400'}`}
+              />
+              <Chip
+                onSelect={(v) => setFilterBy({ ...filterBy, priority: v })}
+                child={<p className='px-2 cursor-pointer py-1'>Low</p>}
+                bgColor={`${filterBy.priority === 'Low' ? 'bg-blue-600' : 'bg-slate-400'}`}
+              />
+            </div>
+            <br />
+            <h1>Due Date</h1>
+            <div className='flex space-x-2 text-sm text-gray-500'>
+              <Chip
+                onSelect={(v) => setFilterBy({ ...filterBy, date: v })}
+                child={<p className='px-2 cursor-pointer py-1'>Past Dates</p>}
+                bgColor={`${filterBy.date === 'Past Dates' ? 'bg-blue-600' : 'bg-slate-400'}`}
+              />
+              <Chip
+                onSelect={(v) => setFilterBy({ ...filterBy, date: v })}
+                child={<p className='px-2 cursor-pointer py-1'>Future Dates</p>}
+                bgColor={`${filterBy.date === 'Future Dates' ? 'bg-blue-600' : 'bg-slate-400'}`}
+              />
+            </div>
+            <hr className=' my-4 bg-slate-600' />
+            {(filterBy.date !== '' || filterBy.priority !== '') &&
+              <>
+                <p className=' text-slate-500 text-sm'>Filter would be done based on {filterBy.date} {filterBy.priority !== '' && ` ${filterBy.date !== '' && ' and '} ${filterBy.priority} priority`}</p>
+              </>
+            }
+          </>
+        }
+      />
       <div className='flex mb-6 md:mb-0 justify-between items-center'>
         <h1 className='font-medium text-blue-800 text-lg md:text-2xl'>TASKS</h1>
         <Button onClick={() => {
@@ -126,7 +178,7 @@ const TasksPage: React.FC = () => {
           value={searchFieldVal}
           placeholder={`Search ${tabsItems[activeTab]} tasks by name or description`}
         />
-        <Filter className=' text-gray-600' />
+        <Filter onClick={() => setShowModal({ ...showModal, filter: true })} className=' text-gray-600 cursor-pointer' />
       </div>
       {status === 'pending' ? <div className="text-center">
         <Spinner size={'lg'} />

@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 interface ChipProps {
   child: string | React.ReactNode,
-  bgColor: string
+  bgColor: string,
+  onSelect?: (value: string) => void
 }
 
-const Chip: React.FC<ChipProps> = ({ child, bgColor }) => {
-  console.log(bgColor);
+const Chip: React.FC<ChipProps> = ({ child, bgColor, onSelect }) => {
+  const myRef = useRef<HTMLDivElement>(null); 
   return (
-    <div className={`p-1 ${bgColor} text-center text-xs rounded-full text-white`}>
+    <div ref={myRef} onClick={()=>onSelect!(myRef.current?.innerText!)} className={`p-1 ${bgColor} text-center text-xs rounded-full text-white`}>
       {child}
     </div>
   )
