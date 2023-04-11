@@ -111,11 +111,9 @@ const TasksPage: React.FC = () => {
         onProceed={() => {
           const { priority, date } = filterBy;
           let filtererdTasks: Task[] = [...tasks];
-          console.log(filtererdTasks);          
           if (priority !== '') {
             filtererdTasks = filtererdTasks.filter(task => task.priority === filterBy.priority);
           }
-          console.log(filtererdTasks, priority);
           if (date !== '') {
             if (date === 'Past Dates') {
               filtererdTasks = filtererdTasks.filter(task => moment(task.due_date).isBefore(moment()))
