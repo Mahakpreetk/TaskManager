@@ -2,22 +2,23 @@ import { Button, Spinner, TextInput } from 'flowbite-react'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Filter, Plus } from 'react-feather'
 import { notify } from 'reapop'
-import Chip from 'src/components/Chip'
 import CustomModal from 'src/components/Modal'
 import NavTabs from 'src/components/NavTabs'
 import CustomTable from 'src/components/table'
 import { useAppDispatch, useAppSelector } from 'src/hook/redux'
-import { Task, TaskStatus } from 'src/models/task'
+import { Task, TaskFilter, TaskStatus } from 'src/models/task'
 import { addTask, deleteTaskById, getAllTasks, updateTaskById } from 'src/store/task/taskService'
 import NewTaskModalBody from './NewTaskModalBody'
+import TaskFiltering from './TaskFilter'
 import TasksTableBody from './TasksTableBody'
+import moment from 'moment'
 
 const TasksPage: React.FC = () => {
   const tabsItems: TaskStatus[] = ['all', 'not-started', 'completed', 'in-progress'];
   const [activeTab, setActiveTab] = useState(0)
   const [systemTasks, setSystemTasks] = useState<Task[]>([])
   const [searchFieldVal, setSearchFieldVal] = useState('');
-  const [filterBy, setFilterBy] = useState({ priority: '', date: '' })
+  const [filterBy, setFilterBy] = useState<TaskFilter>({ priority: '', date: '' })
   const [isEditMode, setIsEditMode] = useState<boolean | null>(null);
   const [task, setTask] = useState({
     due_date: new Date(),
@@ -108,50 +109,30 @@ const TasksPage: React.FC = () => {
         show={showModal.filter}
         title={'Filter Tasks'}
         onProceed={() => {
-
-        }}
-        onCancel={() => setShowModal({ ...showModal, filter: false })}
-        body={
-          <>
-            <h1>Priority</h1>
-            <div className='flex space-x-4'>
-              <Chip
-                onSelect={(v) => setFilterBy({ ...filterBy, priority: v })}
-                child={<p className='px-2 cursor-pointer py-1'>High</p>}
-                bgColor={`${filterBy.priority === 'High' ? 'bg-blue-600' : 'bg-slate-400'}`}
-              />
-              <Chip
-                onSelect={(v) => setFilterBy({ ...filterBy, priority: v })}
-                child={<p className='px-2 cursor-pointer py-1'>Medium</p>}
-                bgColor={`${filterBy.priority === 'Medium' ? 'bg-blue-600' : 'bg-slate-400'}`}
-              />
-              <Chip
-                onSelect={(v) => setFilterBy({ ...filterBy, priority: v })}
-                child={<p className='px-2 cursor-pointer py-1'>Low</p>}
-                bgColor={`${filterBy.priority === 'Low' ? 'bg-blue-600' : 'bg-slate-400'}`}
-              />
-            </div>
-            <br />
-            <h1>Due Date</h1>
-            <div className='flex space-x-2 text-sm text-gray-500'>
-              <Chip
-                onSelect={(v) => setFilterBy({ ...filterBy, date: v })}
-                child={<p className='px-2 cursor-pointer py-1'>Past Dates</p>}
-                bgColor={`${filterBy.date === 'Past Dates' ? 'bg-blue-600' : 'bg-slate-400'}`}
-              />
-              <Chip
-                onSelect={(v) => setFilterBy({ ...filterBy, date: v })}
-                child={<p className='px-2 cursor-pointer py-1'>Future Dates</p>}
-                bgColor={`${filterBy.date === 'Future Dates' ? 'bg-blue-600' : 'bg-slate-400'}`}
-              />
-            </div>
-            <hr className=' my-4 bg-slate-600' />
-            {(filterBy.date !== '' || filterBy.priority !== '') &&
-              <>
-                <p className=' text-slate-500 text-sm'>Filter would be done based on {filterBy.date} {filterBy.priority !== '' && ` ${filterBy.date !== '' && ' and '} ${filterBy.priority} priority`}</p>
-              </>
+          const { priority, date } = filterBy;
+          let filtererdTasks: Task[] = [...tasks];
+          console.log(filtererdTasks);          
+          if (priority !== '') {
+            filtererdTasks = filtererdTasks.filter(task => task.priority === filterBy.priority);
+          }
+          console.log(filtererdTasks, priority);
+          if (date !== '') {
+            if (date === 'Past Dates') {
+              filtererdTasks = filtererdTasks.filter(task => moment(task.due_date).isBefore(moment()))
+            } else if (date === 'Future Dates') { 
+              filtererdTasks = filtererdTasks.filter(task => moment(task.due_date).isAfter(moment()))
             }
-          </>
+          }
+          console.log(filtererdTasks, date);          
+          setShowModal({ ...showModal, filter: false });
+          setSystemTasks(filtererdTasks);
+        }}
+        onCancel={() => {
+          setFilterBy({ priority: '', date: '' });
+          setShowModal({ ...showModal, filter: false });
+        }}
+        body={
+          <TaskFiltering setFilterBy={setFilterBy} filterBy={filterBy} />
         }
       />
       <div className='flex mb-6 md:mb-0 justify-between items-center'>
