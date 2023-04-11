@@ -119,7 +119,7 @@ const TasksPage: React.FC = () => {
           setActiveTab(tab)
         }}
       />
-      <div className='mb-3 lg:mb-10 flex justify-between items-center lg:space-x-4'>
+      <div className='mb-10 flex justify-between items-center space-x-4'>
         <TextInput
           className='flex-1'
           onChange={handleTaskSearch}
