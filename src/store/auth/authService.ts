@@ -3,12 +3,21 @@ import { AxiosError } from 'axios';
 import { User, UserCredentials } from "src/models/user";
 import axios from '../axios';
 import { setUser } from "./authSlice";
+import { ADRIOT_USER_INFO_KEY } from "src/contants";
 
 export const createUserAccount = createAsyncThunk(
-  'auth/createAccount',
+  "auth/createAccount",
   async (user: User, { fulfillWithValue, rejectWithValue, dispatch }) => {
     try {
-      const { data } = await axios.post('/users', user);
+      const { data } = await axios.post("/users", user);
+      // Store user credentials in local storage upon successful account creation
+      localStorage.setItem(
+        "userCredentials",
+        JSON.stringify({
+          storedEmail: user.email_address,
+          storedPassword: user.password,
+        })
+      );
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;
@@ -16,6 +25,7 @@ export const createUserAccount = createAsyncThunk(
     }
   }
 );
+
 
 export const getUsers = createAsyncThunk(
   'auth/getUsers',
@@ -71,11 +81,14 @@ export const userPasswordReset = createAsyncThunk(
 );
 
 export const userLogin = createAsyncThunk(
-  'auth/login',
-  async (credentials: UserCredentials, { fulfillWithValue, rejectWithValue, dispatch }) => {
+  "auth/login",
+  async (
+    credentials: UserCredentials,
+    { fulfillWithValue, rejectWithValue, dispatch }
+  ) => {
     try {
-      const { data } = await axios.post('/users/login', credentials);
-      dispatch(setUser(data));
+      const { data } = await axios.post("/users/login", credentials);
+      dispatch(setUser(data)); // Dispatch setUser action with user data upon successful login
       return fulfillWithValue(data);
     } catch (err) {
       const error = err as AxiosError;

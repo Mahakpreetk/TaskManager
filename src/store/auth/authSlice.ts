@@ -1,28 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { ADRIOT_USER_INFO_KEY, ADRIOT_USER_TOKEN_KEY } from 'src/contants';
-import { AuthState } from 'src/models/store';
-import { asyncIsFulfilled, asyncIsPending, asyncIsRejected } from '../asyncConfig';
+import { ADRIOT_USER_INFO_KEY, ADRIOT_USER_TOKEN_KEY } from "src/contants";
+
+import { createSlice } from "@reduxjs/toolkit";
+import { AuthState } from "src/models/store";
 import {
-  createUserAccount, deleteUserAccount, getUsers, updateUserAccount,
+  asyncIsFulfilled,
+  asyncIsPending,
+  asyncIsRejected,
+} from "../asyncConfig";
+import {
+  createUserAccount,
+  deleteUserAccount,
+  getUsers,
+  updateUserAccount,
   userLogin,
-  userPasswordReset
-} from './authService';
+  userPasswordReset,
+} from "./authService";
 
 const initialState: AuthState = {
-  message: '',
+  message: "",
   user: null,
   status: null,
-  users: []
-}
+  users: [],
+};
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload.user;
-      localStorage.setItem(ADRIOT_USER_INFO_KEY, JSON.stringify(action.payload?.user));
-      localStorage.setItem(ADRIOT_USER_TOKEN_KEY, action.payload?.token);
+      localStorage.setItem(
+        ADRIOT_USER_INFO_KEY,
+        JSON.stringify(action.payload.user)
+      );
+      localStorage.setItem(ADRIOT_USER_TOKEN_KEY, action.payload.token);
     },
     getUser: (state) => {
       const user = JSON.parse(localStorage.getItem(ADRIOT_USER_INFO_KEY)!);
@@ -35,37 +46,38 @@ export const authSlice = createSlice({
     },
     clearAuthState: (state) => {
       state.status = null;
-      state.message = ''
-    }
+      state.message = "";
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(createUserAccount.pending, asyncIsPending)
-    builder.addCase(createUserAccount.rejected, asyncIsRejected)
-    builder.addCase(createUserAccount.fulfilled, asyncIsFulfilled)
-    builder.addCase(deleteUserAccount.pending, asyncIsPending)
-    builder.addCase(deleteUserAccount.rejected, asyncIsRejected)
-    builder.addCase(deleteUserAccount.fulfilled, asyncIsFulfilled)
-    builder.addCase(updateUserAccount.pending, asyncIsPending)
-    builder.addCase(updateUserAccount.rejected, asyncIsRejected)
+    builder.addCase(createUserAccount.pending, asyncIsPending);
+    builder.addCase(createUserAccount.rejected, asyncIsRejected);
+    builder.addCase(createUserAccount.fulfilled, asyncIsFulfilled);
+    builder.addCase(deleteUserAccount.pending, asyncIsPending);
+    builder.addCase(deleteUserAccount.rejected, asyncIsRejected);
+    builder.addCase(deleteUserAccount.fulfilled, asyncIsFulfilled);
+    builder.addCase(updateUserAccount.pending, asyncIsPending);
+    builder.addCase(updateUserAccount.rejected, asyncIsRejected);
     builder.addCase(updateUserAccount.fulfilled, (state, action) => {
-      state.status = 'fulfilled';
+      state.status = "fulfilled";
       state.message = action.payload.message;
       state.user = action.payload.user;
-    })
-    builder.addCase(getUsers.pending, asyncIsPending)
-    builder.addCase(getUsers.rejected, asyncIsRejected)
+    });
+    builder.addCase(getUsers.pending, asyncIsPending);
+    builder.addCase(getUsers.rejected, asyncIsRejected);
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.status = null;
       state.users = action.payload.users;
-    })
-    builder.addCase(userPasswordReset.pending, asyncIsPending)
-    builder.addCase(userPasswordReset.fulfilled, asyncIsFulfilled)
-    builder.addCase(userPasswordReset.rejected, asyncIsRejected)
-    builder.addCase(userLogin.pending, asyncIsPending)
-    builder.addCase(userLogin.fulfilled, asyncIsFulfilled)
-    builder.addCase(userLogin.rejected, asyncIsRejected)
-  }
+    });
+    builder.addCase(userPasswordReset.pending, asyncIsPending);
+    builder.addCase(userPasswordReset.fulfilled, asyncIsFulfilled);
+    builder.addCase(userPasswordReset.rejected, asyncIsRejected);
+    builder.addCase(userLogin.pending, asyncIsPending);
+    builder.addCase(userLogin.fulfilled, asyncIsFulfilled);
+    builder.addCase(userLogin.rejected, asyncIsRejected);
+  },
 });
 
-export const { setUser, getUser, clearUser, clearAuthState } = authSlice.actions;
+export const { setUser, getUser, clearUser, clearAuthState } =
+  authSlice.actions;
 export default authSlice.reducer;
